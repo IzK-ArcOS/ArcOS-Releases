@@ -12,8 +12,4 @@
   "devDependencies": {
     "electron": "^11.2.3"
   },
-  "dependencies": {
-    "98.css": "^0.1.16",
-    "electron-cookies": "^1.1.0"
-  }
 }
