@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <config id="javascriptLoader">
+        <script src="system/js/windowLogic.js"></script>
+        <script src="system/js/dragLogic.js"></script>
+        <script src="system/js/varDefinitions.js"></script>
+        <script src="system/js/startMenuLogic.js"></script>
+        <script src="system/js/onloadLogic.js"></script>
+        <script src="system/js/generalLogic.js"></script>
+        <script src="system/js/contextMenuLogic.js"></script>
+        <script src="system/js/personalizationLogic.js"></script>
+        <script src="system/js/powerLogic.js"></script>
+        <script src="system/js/errorLogic.js"></script>
+        <script src="system/js/notificationLogic.js"></script>
+    </config>
+    <link rel="stylesheet" href="./system/css/WebOSShell.css" id="shellLoader">
+    <link rel="stylesheet" href="./system/css/checkboxes.css">
+    <link rel="stylesheet" href="" id="addonShellLoader">
+    <link rel="stylesheet" id="taskbarAddonLoader">
+</head>
+
+<body id="bdy">
+
+    <div class="desktopicons" id="desktopIcons">
+        <button class="icon" onclick="openWindow('Control Panel');">
+            <img src="./system/images/controlPanel.svg" height="50px" />
+            <br>Control Panel</button><Br>
+    </div>
+    <div id="windowStore">
+
+    </div>
+    <div class="startMenu" id="startMenu">
+        <div class="leftPane" id="startMenuLeftPane">
+            <center>
+                <button onclick="openWindow('Shut Down WebOS');" class="startMenuButton"><img
+                        src="./system/images/shutdown.svg" height="20px"></button>
+                <button onclick="openWindow('Control Panel');" class="startMenuButton"><img
+                        src="./system/images/controlPanel.svg" height="20px"></button>
+                <button onclick="openWindow('Execute Command');" class="startMenuButton"><img
+                        src="./system/images/runDialog.svg" height="20px"></button>
+            </center>
+        </div>
+        <div class="rightPane" id="startMenuRightPane">
+            <div class="startMenuUsername">
+                <span id="usernameStartMenu"></span>
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+            <div class="startMenuAppTile">
+                [placeholder]
+            </div>
+        </div>
+    </div>
+    <div class="taskbar" id="taskbar">
+        <button class="startButton" id="startButton" onclick="toggleStart();">
+            <img src="./system/images/systemIcon.webp" height="20px">
+        </button>
+        <span id="taskbarButtons" class="taskbarButtons"></span>
+        <span style="float:right">
+            <button class="startButton" style="height:40px;" onclick="toggleClockWidget();" id="taskbarClock">
+                <h3 id="taskbarClock">--:--</h3>
+            </button>
+        </span>
+    </div>
+    <div class="clockWidget" id="taskbarClockWidget">
+        <h3 style="font-family: 'Segoe UI light';margin:21.44px;margin-bottom:0px;">Current Time</h3>
+        <h1 style="font-family: 'Segoe UI light';margin:21.44px;margin-top:0px;"><span
+                id="taskbarClockWidgetTime"></span></h1>
+        </center>
+    </div>
+    <style>
+        window[id*="Error Message"]>* {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+    <div class="window" id="Error Message" onclick="bringToFront(this);"
+        style="min-width:calc(fit-content + 40px);max-width:calc(100% - 120px);min-height: unset;max-height: unset;height:unset;">
+        <div class="windowTitle">
+            <p id="errorTitle" style="margin:0px;"></p>
+            <button onclick="closewindow(this.parentNode.parentNode);" class="title close">✖</button>
+            <button onclick="minimizeWindow(this.parentNode.parentNode.id);" class="title">🗕</button>
+        </div>
+        <div class="body" onclick="bringToFront(parentNode);">
+            <br>
+            <p id="errorMessage" style="padding-left:20px;padding-right:20px;"></p>
+            <center>
+                <button
+                    onclick="closewindow(this.parentNode.parentNode.parentNode);errorMessageReady = true">OK</button><br><br>
+            </center>
+        </div>
+    </div>
+
+    <div id="contextMenu" class="context-menu" style="display:block">
+        <ul>
+
+            <li style="padding-left:10px; padding-right:10px;margin-top:10px;"><input type="checkbox" class="switch"
+                    id="showDesktopIconsSwitch" style="min-width: unset;" onclick="updateDesktopIcons();"><label
+                    for="showDesktopIconsSwitch" onclick="updateDesktopIcons();">
+                    <p style="margin:0px;">Show Desktop Icons</p>
+                </label></li>
+            <hr>
+            <li><a onclick="openWindow('Shut Down WebOS')">Shut Down</a></li>
+            <hr>
+            <li><a onclick="openWindow('Control Panel');">Control Panel</a></li>
+            <li><a onclick="openWindow('Preferences');">Preferences</a></li>
+        </ul>
+    </div>
+    <div class="block"></div>
+    <div class="notification" id="notificationService">
+        <h3>
+            <span id="notificationTitle">WebOS.System.notificationLogic.notificationTitle</span>
+            <button onclick="closeNotification();" class="title close">✖</button>
+        </h3>
+        <p id="notificationMessage">WebOS.System.notificationLogic.notificationMessage</p>
+
+    </div>
+    <noscript id="errorMessageTemplate">
+        <div class="window" id="errorMessageBox" onclick="bringToFront(this);"
+            style="min-width:calc(fit-content + 40px);max-width:calc(100% - 120px);min-height: unset;max-height: unset;height:unset;">
+            <div class="windowTitle" id="errorMessageBoxWindowTitle">
+                <p id="errorMessageBoxTitle" style="margin:0px;"></p>
+                <button onclick="closewindow(this.parentNode.parentNode);" class="title close">✖</button>
+                <button onclick="minimizeWindow(this.parentNode.parentNode.id);" class="title">🗕</button>
+            </div>
+            <div class="body" onclick="bringToFront(parentNode);">
+                <br>
+                <p id="errorMessageMsg" style="padding-left:20px;padding-right:20px;"></p>
+                <center>
+                    <button onclick="closewindow(this.parentNode.parentNode.parentNode);">OK</button><br><br>
+                </center>
+            </div>
+    </noscript>
+
+</body>
+
+</html>

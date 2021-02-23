@@ -1,0 +1,186 @@
+.window {
+    border-radius: 0px;
+}
+
+.windowTitle {
+    border-radius: 0px;
+}
+
+button.title {
+    border-radius: 0px;
+}
+
+div.taskbar {
+    border-radius: 0px;
+}
+
+.windowTitle>button:hover {
+    border-radius: 0px;
+}
+
+.windowTitle>button.close {
+    border-radius: 0px;
+}
+
+.windowTitle>button.close:hover {
+    border-radius: 0px;
+}
+
+.startMenuButton {
+    border-radius: 0px;
+}
+
+.taskbarButton {
+    border-radius: 0px;
+}
+
+.taskbarButton:hover {
+    border-radius: 0px;
+}
+
+.taskbarButton:active {
+    border-radius: 0px;
+}
+
+.startButton {
+    border-radius: 0px;
+}
+
+.startButton:hover {
+    border-radius: 0px;
+}
+
+.startButton:active {
+    border-radius: 0px;
+}
+
+div.desktopicons {
+    border-radius: 0px;
+}
+
+button.icon {
+    border-radius: 0px;
+}
+
+button.icon:hover {
+    border-radius: 0px;
+}
+
+div.startMenu {
+    border-radius: 0px;
+}
+
+div.startMenu>.leftPane {
+    border-radius: 0px;
+}
+
+button {
+    border-radius: 0px;
+}
+
+button:hover {
+    border-radius: 0px;
+}
+
+button:active {
+    border-radius: 0px;
+}
+
+.startMenuAppTile {
+    border-radius: 0px;
+}
+
+.startMenuUsername {
+    border-radius: 0px;
+}
+
+.startMenuAppTile:hover {
+    border-radius: 0px;
+}
+
+.startMenuAppTile:active {
+    border-radius: 0px;
+}
+
+div.clockWidget {
+    border-radius: 0px;
+}
+
+div.clockWidget>h1, h2, h3, h4 {
+    border-radius: 0px;
+}
+
+input {
+    border-radius: 0px;
+}
+
+select {
+    border-radius: 0px;
+}
+
+* {
+    border-radius: 0px;
+}
+
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    input[type=checkbox], input[type=radio] {
+        --active: #275EFE;
+        --active-inner: #fff;
+        --focus: 2px rgba(39, 94, 254, .3);
+        --border: #747474;
+        --border-hover: #275EFE;
+        --background: rgb(61, 61, 61);
+        --disabled: #000000;
+        --disabled-inner: #8d8d8d;
+    }
+    input[type=checkbox]:not(.switch) {
+        border-radius: 0px;
+    }
+    input[type=radio] {
+        border-radius: 0px;
+    }
+    input[type=radio]:after {
+        border-radius: 0px;
+    }
+}
+
+hr {
+    border: #666 1px solid;
+}
+
+label {
+    color: white;
+}
+
+.context-menu {
+    background: #333;
+    border-radius: unset;
+}
+
+.context-menu ul li {
+    border-radius: unset;
+    background-color: #333;
+}
+
+.context-menu ul li a {
+    border-radius: unset;
+    color: white;
+}
+
+.context-menu ul li:hover {
+    border-radius: unset;
+    background: #444;
+}
+
+.context-menu ul li:active {
+    border-radius: unset;
+    background: #666;
+}
+
+div.block {
+    background-image: url("../wallpaper/img04.jpg");
+}
+
+.notification {
+    border-radius: unset;
+}

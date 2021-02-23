@@ -1,0 +1,19 @@
+{
+  "name": "WebOSv3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./system/kernel.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^11.2.3"
+  },
+  "dependencies": {
+    "98.css": "^0.1.16",
+    "electron-cookies": "^1.1.0"
+  }
+}

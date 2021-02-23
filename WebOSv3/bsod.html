@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: blue;
+            color: white;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        * {
+            cursor: none;
+        }
+
+        h1 {
+            font-size: 2vw;
+        }
+    </style>
+    <script>
+        onload = function () {
+            document.getElementById("title").innerHTML = localStorage.getItem("BSODTitle");
+            document.getElementById("message").innerHTML = localStorage.getItem("BSODMessage");
+            localStorage.removeItem("BSODTitle");
+            localStorage.removeItem("BSODMessage");
+            setTimeout(() => {
+                while (true) {
+                    a = Array(32767).join("\u00a0") + "b";  // A string with 30 consecutive \u00a0
+                    s = Date.now();
+                    t = a.replace(/^(\s|\u00A0)+$/g, '');
+                    x = Date.now() - s, a.length;
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>
+        <code>
+            A problem has been encountered and WebOS has been shut down to prevent damage<br>
+            to your computer.<br><br>
+            <span id="title"></span><br><br>
+            If this is the first time you've seen this stop error sreen,<Br>
+            restart your computer. If this screen appears again, follow<br>
+            these steps:<br><br>
+            Check to make sure any new software is properly loaded, and try to unload<br>
+            any unnecessary applications, since they are allowed to trigger a bluescreen.<br>
+            If problems continue, try to reset your account, or clear the cache. You can<br>
+            reset your account by logging in, going to <b>Control Panel > User Settings > <span style="color:red">RESET.</span></b><br><br>
+            <b>Technical information (provided by process that triggered the BSOD):</b><br><bR>
+            <span id="message"></span>
+
+        </code>
+    </h1>
+</body>
+
+</html>

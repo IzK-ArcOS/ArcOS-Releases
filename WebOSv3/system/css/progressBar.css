@@ -1,0 +1,94 @@
+.slider.halfwidth {
+    position: absolute;
+    width: 50%;
+    height: 5px;
+    overflow-x: hidden;
+}
+
+.line.dark {
+    position: absolute;
+    opacity: 0.4;
+    background: transparent;
+    width: 150%;
+    height: 5px;
+}
+
+.subline.dark {
+    position: absolute;
+    background: #115cd6;
+    height: 5px;
+}
+
+.slider.fullwidth {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    overflow-x: hidden;
+}
+
+.slider.userdefined {
+    position: absolute;
+    width: 0px;
+    height: 5px;
+    overflow-x: hidden;
+}
+
+.slider.w80 {
+    position: absolute;
+    width: 80%;
+    height: 5px;
+    overflow-x: hidden;
+}
+
+.slider {
+    width: 250px;
+}
+
+.line.light {
+    position: absolute;
+    opacity: 0.4;
+    background: #4a8df8;
+    width: 150%;
+    height: 5px;
+}
+
+.subline.light {
+    position: absolute;
+    background: #4a8df8;
+    height: 5px;
+}
+
+.inc {
+    animation: increase 2s infinite;
+}
+
+.dec {
+    animation: decrease 2s 0.5s infinite;
+}
+
+@keyframes increase {
+    from {
+        left: -5%;
+        width: 5%;
+    }
+    to {
+        left: 130%;
+        width: 100%;
+    }
+}
+
+@keyframes decrease {
+    from {
+        left: -80%;
+        width: 80%;
+    }
+    to {
+        left: 110%;
+        width: 10%;
+    }
+}
+
+.slider.fixed_bottom {
+    bottom: 0px;
+    margin-bottom: 20px;
+}

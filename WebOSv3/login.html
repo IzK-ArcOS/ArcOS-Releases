@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./setupAssets/setupStyle.css">
+    <link rel="stylesheet" href="./system/css/progressBar.css">
+    <script type="text/javascript" src="./setupAssets/setupLogic.js"></script>
+
+</head>
+
+<body>
+    <div class="content" id="main" style="visibility: visible;display: unset;background: transparent;">
+    </div>
+    <div id="page1" style="visibility: hidden;">
+        <h2>WebOSv3 Login</h2>
+        <p>Enter your name:</p>
+        <span>
+            <center><input id="userInput" maxlength="13"><button onclick="nextPage();"><img
+                        src="./system/images/next-arrow.svg" height="25px"
+                        style="color:white;fill-rule: evenodd;fill:white;" /></button></center>
+        </span>
+
+    </div>
+    <img id="shutDownButton" src="system/images/shutdown.svg" height="25px" width="25px"
+        style="position: fixed;bottom:10px;right:10px;" onclick="shutdown();">
+    <div id="page2" style="visibility: hidden;">
+        <h2>Welcome, <span id="username"></span></h2>
+        <div class="slider userdefined" style="width:85%;">
+            <div class="line dark"></div>
+            <div class="subline dark inc" style="background: white;"></div>
+            <div class="subline dark dec" style="background: white;"></div>
+        </div>
+
+    </div>
+</body>
+
+</html>

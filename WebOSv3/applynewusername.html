@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./setupAssets/setupStyle.css">
+    <link rel="stylesheet" href="./system/css/progressBar.css">
+    <script>
+        onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            setTimeout(() => {
+                localStorage.setItem("username",params.get("username"));
+                window.location.href = "login.html?username=" + (params.get("username")) + "&autoLogin=1";
+            }, 4000);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="content" id="main" style="visibility: visible;display: unset;background:transparent">
+    
+        <h2>Applying new username...</h2>
+        <div class="slider userdefined" style="width:85%;">
+            <div class="line dark"></div>
+            <div class="subline dark inc" style="background: #fff;"></div>
+            <div class="subline dark dec" style="background: #fff"></div>
+        </div>
+    </div>
+</body>
+
+</html>
