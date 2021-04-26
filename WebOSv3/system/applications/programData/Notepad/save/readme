@@ -1,17 +1,1 @@
-
-===WebOS ReadMe===
-
-There are a few things of note when using WebOS Notepad:
-
-All Notepads will be saved in:
-(WebOS installation folder)\system\applications\programdata\notepad\save
-
-Use the Delete button to delete one of these files.
-
-Use the Save button to save the changes to the file. You will be asked to open a file if you haven't done so already.
-
-Use the Load button to open a file.
-
-Use the New button to discard all changes and reset the Notepad.
-
-- TechWorldInc
+There is nothing to read :(
