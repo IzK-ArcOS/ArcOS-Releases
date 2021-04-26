@@ -8,30 +8,30 @@
         <center>
             <h2>WebOS Settings</h2>
             <p>Select an applet to continue.</p>
-        
-        <button onclick="startChangeUsername();" style="width:132px;height:113px;">
+
+            <button onclick="startChangeUsername();" style="width:132px;height:113px;">
             <img src="./system/images/user.svg" height="75px"/><br>
             User Settings
         </button>
-        <button onclick="openWindow('Preferences');minimizeWindow('Control Panel')" style="width:132px;height:113px;">
+            <button onclick="openWindow('Preferences');//minimizeWindow('Control Panel');" style="width:132px;height:113px;">
             <img src="./system/images/themeSelectorIcon.svg" height="75px"/><br>
             Preferences
         </button>
-        <button onclick="openWindow('Add Application');minimizeWindow('Control Panel')" style="width:132px;height:113px;">
+            <button onclick="openWindow('Add Application');//minimizeWindow('Control Panel');" style="width:132px;height:113px;">
             <img src="./system/images/addappicon.svg" height="75px"/><br>
             Load custom app
         </button><br><br>
-        <button onclick="window.location.href = 'shutdown.html?username=' + username" style="width:132px;height:113px;">
-            <img src="./system/images/user.svg" height="75px"/><br>
-            Change Username
+            <button onclick="openWindow('System Settings');//minimizeWindow('Control Panel');" style="width:132px;height:113px;">
+            <img src="./system/images/systemSettings.svg" height="75px"/><br>
+            System Settings
         </button>
-        <button onclick="window.location.href = 'shutdown.html?username=' + username" style="width:132px;height:113px;">
-            <img src="./system/images/user.svg" height="75px"/><br>
-            Change Username
+            <button style="width:132px;height:113px;">
+            <img src="./system/images/unknownFile.svg" height="75px"/><br>
+            <br>
         </button>
-        <button onclick="window.location.href = 'shutdown.html?username=' + username" style="width:132px;height:113px;">
-            <img src="./system/images/user.svg" height="75px"/><br>
-            Change Username
+            <button style="width:132px;height:113px;">
+            <img src="./system/images/unknownFile.svg" height="75px"/><br>
+            <Br>
         </button><br>
         </center>
     </div>

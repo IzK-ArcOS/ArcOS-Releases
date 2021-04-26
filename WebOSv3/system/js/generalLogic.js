@@ -1,6 +1,7 @@
-console.warn("STATUS: Initiated Module: WebOS.System.generalLogic");
+startModule("WebOS.System.generalLogic");
+
 function toggleClockWidget() {
-    clockWidget = document.getElementById("taskbarClockWidget");
+    clockWidget = getElemId("taskbarClockWidget");
     if (clockWidget.style.visibility === 'visible') {
         clockWidget.style.opacity = '0';
         setTimeout(() => {
@@ -13,47 +14,61 @@ function toggleClockWidget() {
     }
 }
 
+function toggleVolumeControlWidget() {
+    volumeControl = getElemId("taskbarVolumeControl");
+    if (volumeControl.style.visibility === 'visible') {
+        volumeControl.style.opacity = '0';
+        setTimeout(() => {
+            volumeControl.style.visibility = 'hidden';
+        }, 200);
+    } else {
+        volumeControl.style.opacity = '0'
+        volumeControl.style.visibility = 'visible';
+        volumeControl.style.opacity = '1';
+    }
+}
+
 function startChangeUsername() {
-    minimizeWindow("Control Panel");
+    //minimizeWindow("Control Panel");
     openWindow("User Settings");
 }
 
-var newUsername = "";
+
 function changeUsername() {
-    newUsername = document.getElementById("changeUsernameInputField").value;
-    if (newUsername != "AARD") {
-        window.location.href = "applynewusername.html?username=" + newUsername;
-    } else {
-        AARD();
-    }
+    newUsername = getElemId("changeUsernameInputField").value;
+    changeUserDataName(args.get("username"), newUsername);
 }
 
 function addNewApp() {
     try {
-        if (document.getElementById("addAppInputField").value !== "") {
-            loadWindow(document.getElementById("addAppInputField").value);
+        if (getElemId("addAppInputField").value !== "") {
+            var open = getElemId("startAppAfterAddCheckBox").checked;
+            if (open == true) {
+                loadWindow(getElemId("addAppInputField").value, 0, 0);
+            } else {
+                loadWindow(getElemId("addAppInputField").value, 1, 1);
+            }
         } else {
-            sendError("Application Error", "The system detected a failure in <B>WebOS.System.Applications.AddApp.</b><br>Application Execution will continue, but might be unstable.<br><br>Cause: addAppInputField was \"\" (string.empty).")
+            sendError("Application not found", "The Application you tried to import couldn't be found. Check the <b>relative</b> path and try again.");
         }
-
     } catch {
-        sendError("Application not found", "The Application you tried to import couldn't be found. Check the RELATIVE path and try again.");
+        sendError("Application not found", "The Application you tried to import couldn't be found. Check the <b>relative</b> path and try again.");
     }
 }
 
 function updateDesktopIcons() {
-    var elmnt = document.getElementById("showDesktopIconsSwitch").checked;
+    var elmnt = getElemId("showDesktopIconsSwitch").checked;
     if (elmnt) {
-        document.getElementById("desktopIcons").style.visibility = "visible";
-        localStorage.setItem("showDesktopIcons", "1");
+        getElemId("desktopIcons").style.visibility = "visible";
+        localStorage.setItem(args.get("username") + "_showDesktopIcons", "1");
     } else {
-        document.getElementById("desktopIcons").style.visibility = "hidden";
-        localStorage.setItem("showDesktopIcons", "0");
+        getElemId("desktopIcons").style.visibility = "hidden";
+        localStorage.setItem(args.get("username") + "_showDesktopIcons", "0");
     }
 }
 
 function configureWebOS() {
-    var x = document.getElementById("Welcome!").getElementsByClassName("body");
+    var x = getElemId("Welcome!").getElementsByClassName("body");
     x[0].innerHTML =
         "<center><h3>Configure your copy of WebOS</h3>" +
         "</center><p style=\"padding:10px;\">Change the color scheme and taskbar location: " +
@@ -65,7 +80,15 @@ function configureWebOS() {
         "<br><br>Note: when you click one of these buttons the window will minimize to the <b>taskbar</b></p><br><center>" +
         "<button style=\"padding:10px;margin-bottom:20px;\" onclick=\"closewindow(this.parentNode.parentNode.parentNode);\">Close</button>" +
         "</center>";
-    document.getElementById("Welcome!").style.minHeight = "unset";
-    document.getElementById("Welcome!").style.maxHeight = "unset";
-    document.getElementById("Welcome!").style.height = "fit-content"
+    getElemId("Welcome!").style.minHeight = "unset";
+    getElemId("Welcome!").style.maxHeight = "unset";
+    getElemId("Welcome!").style.height = "fit-content"
 }
+
+function loadJS(file) {
+    (async() => { import (file); })();
+}
+
+window.addEventListener("click", e => {
+    updateTitlebar();
+});

@@ -1,48 +1,149 @@
-console.warn("STATUS: Initiated module: WebOS.System.setupLogic (login)")
-var currentPage = 1;
-onload = function () {
-    document.getElementById('main').innerHTML = document.getElementById('page' + currentPage).innerHTML;
-    const args = new URLSearchParams(window.location.search);
-    if (args.get("autoLogin") === '1') {
-        document.getElementById("userInput").value = args.get("username");
-        nextPage();
-
-    }
-    document.getElementById("userInput").value = args.get("username");
-    if (localStorage.getItem("username") !== "") {
-        document.getElementById("userInput").value = localStorage.getItem("username");
-        if (localStorage.getItem("autologin") == 1) {
-            nextPage();
+var username;
+var userSelectorActive = false;
+var loginTimeout;
+var page;
+onload = function() {
+    userSelector();
+    document.addEventListener("keydown", e => {
+        if (e.key.toLowerCase() == "enter") {
+            enterKeyHit();
         }
+
+        if (e.key.toLowerCase() == "escape") {
+            if (page != 1) {
+                cancelLogin();
+            }
+
+        }
+    });
+    startUserDataUpdateCycle();
+}
+
+function userSelector() {
+    if (localStorage.getItem("userAmount") != "0") {
+        userSelectorActive = true;
+        switchPage(1);
+        document.getElementById("content").classList.remove("content");
+        document.getElementById("content").classList.add("userSelector");
+        populateUserSelector();
     } else {
-        localStorage.setItem("username", username)
+        switchPage(3);
+        document.getElementById("content").classList.add("content");
+        document.getElementById("content").classList.remove("userSelector");
+    }
+
+
+}
+
+function switchPage(x) {
+    page = x;
+    document.getElementById("content").innerHTML = document.getElementById("page" + x).innerHTML;
+}
+
+function enterKeyHit() {
+    switch (page) {
+        case 2:
+            continueLoginAs(document.getElementById('passwordInputField').value);
+            break;
+        case 3:
+            createFirstUser();
+            break;
+        case 6:
+            cancelLogin();
+            break;
+        case 7:
+            loginAs(username);
+            break;
     }
 }
-function nextPage() {
-    document.getElementById("shutDownButton").style.visibility = "hidden";
-    document.getElementById("shutDownButton").style.opacity = "0";
-    document.getElementsByTagName("html")[0].style.cursor = "none";
-    username = document.getElementById("userInput").value || "Administrator";
-    console.log("STATUS: Registering new user as " + username);
-    document.getElementById('main').innerHTML = document.getElementById('page' + (currentPage + 1)).innerHTML;
-    document.getElementById('username').innerHTML = username;
+
+function loginAs(user) {
+    username = user;
+    if (localStorage.getItem("userList").split(",").includes(user)) {
+        if (localStorage.getItem(username) != "0" || localStorage.getItem(username) != 0) {
+            if (localStorage.getItem(user + "_pswd") != null) {
+                switchPage(2);
+                document.getElementById("content").className = "content";
+                document.getElementById("username").innerHTML = user;
+                if (localStorage.getItem(user + "_picture") == null) {
+                    var userPicPath = "./system/images/user.png";
+                } else {
+                    var userPicPath = "./system/images/profilePictures/" + localStorage.getItem(user + "_picture") + ".png";
+                }
+                document.getElementById("profilePicture").src = userPicPath;
+
+            } else {
+                switchPage(6);
+                document.getElementById("content").className = "content";
+                document.getElementById("username").innerHTML = username;
+                if (localStorage.getItem(username + "_picture") == null) {
+                    var userPicPath = "./system/images/user.png";
+                } else {
+                    var userPicPath = "./system/images/profilePictures/" + localStorage.getItem(username + "_picture") + ".png";
+                }
+                document.getElementById("profilePicture").src = userPicPath;
+                loginTimeout = setTimeout(() => {
+                    localStorage.setItem("username", username);
+                    window.location.href = "webos.html?username=" + username;
+                }, 6000);
+            }
+        }
+    }
+}
+
+function continueLoginAs(pswd) {
+    var pass = localStorage.getItem(username + "_pswd");
+    if (pass == pswd) {
+        switchPage(6);
+        document.getElementById("content").className = "content";
+        document.getElementById("username").innerHTML = username;
+        if (localStorage.getItem(username + "_picture") == null) {
+            var userPicPath = "./system/images/user.png";
+        } else {
+            var userPicPath = "./system/images/profilePictures/" + localStorage.getItem(username + "_picture") + ".png";
+        }
+        document.getElementById("profilePicture").src = userPicPath;
+        loginTimeout = setTimeout(() => {
+            localStorage.setItem("username", username);
+            window.location.href = "webos.html?username=" + username;
+        }, 6000);
+    } else {
+        switchPage(7);
+    }
+}
+
+function populateUserSelector() {
+    try {
+        document.getElementById("userSelectorInner").innerHTML = "";
+        var users = localStorage.getItem("userList").split(",");
+        for (var i = 0; i < users.length; i++) {
+            if (localStorage.getItem(users[i]) != 0 || localStorage.getItem(users[i]) != "0") {
+                if (localStorage.getItem(users[i] + "_picture") == null) {
+                    var userPicPath = "./system/images/user.png";
+                } else {
+                    var userPicPath = "./system/images/profilePictures/" + localStorage.getItem(users[i] + "_picture") + ".png";
+                }
+                document.getElementById("userSelectorInner").innerHTML += "<button class=\"user\" onclick=\"loginAs('" + users[i] + "');\"><img src=\"" + userPicPath + "\"><br>" + users[i] + "</button>"
+            }
+        }
+    } catch {}
+
+}
+
+function cancelLogin() {
+    clearTimeout(loginTimeout);
+    userSelector();
+}
+
+function createFirstUser() {
+    var username = document.getElementById("firstUsernameInputField").value;
+    createUserData(username);
     setTimeout(() => {
-        console.log("STATUS: User registration done, starting WebOS.System.Desktop.")
-        localStorage.setItem("username", username);
-        window.location.href = "webos.html?username=" + username;
-    }, 5000);
-}
+        userSelector();
+        populateUserSelector();
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
 
-window.addEventListener('keypress', function (e) {
-    if (e.key === "Enter") {
-        console.log("STATUS: Function triggered: WebOS.System.Keyboard.Keypress.Enter: Starting WebOS.System.setupLogic.nextPage");
-        nextPage();
-    }
-})
-
-function shutdown() {
-    if (document.getElementById("userInput").value === "COB=1") {
-        localStorage.setItem("crashOnBoot",1)
-    }
-    window.location.href = 'shutdown.html';
+    }, 100);
 }

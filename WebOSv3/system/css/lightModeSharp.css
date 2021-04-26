@@ -237,3 +237,25 @@ div.block {
 .notification>h3>.close {
     color: white;
 }
+
+svg.taskbarSoundControlIcon {
+    width: 20px;
+    height: 20px;
+    fill: black;
+}
+
+input.bright {
+    background: rgb(221, 221, 221);
+}
+
+input.bright:disabled {
+    background: rgb(221, 221, 221);
+}
+
+textarea#notepadTextField {
+    min-width: 600px;
+    min-height: 400px;
+    background-color: transparent;
+    color: black;
+    overflow: scroll;
+}

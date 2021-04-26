@@ -188,3 +188,54 @@ div.block {
 .notification>h3>.close {
     color: white;
 }
+
+svg.taskbarSoundControlIcon {
+    width: 20px;
+    height: 20px;
+    fill: black;
+}
+
+input.bright {
+    background-color: rgb(226, 266, 266);
+}
+
+textarea#notepadTextField {
+    min-width: 600px;
+    min-height: 400px;
+    background-color: transparent;
+    color: black;
+    overflow: scroll;
+}
+
+div.menuBar {
+    height: 20px;
+    background-color: rgba(223, 223, 223, 0.384);
+    color: black;
+}
+
+div.menuBar>button {
+    padding: 2px;
+    height: 20px;
+    /*background-color: #444;*/
+    background-color: transparent;
+    color: black;
+    margin: 0px;
+    min-width: unset;
+    border-radius: 0;
+    min-width: 50px;
+}
+
+div.menuBar>button:hover {
+    background-color: #cfcfcf;
+    min-width: 50px;
+    color: black;
+}
+
+div.menuBar>button:active {
+    background-color: #b8b8b8;
+    color: black;
+}
+
+div.menuBar>button.right {
+    float: right;
+}

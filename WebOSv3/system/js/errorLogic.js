@@ -1,36 +1,44 @@
-console.warn("STATUS: Initiated module: WebOS.System.errorLogic");
+startModule("WebOS.System.errorLogic");
 function bsod(title, message) {
-    localStorage.setItem("BSODTitle", title);
-    localStorage.setItem("BSODMessage", message);
-    window.location.href = "bsod.html";
+    if (localStorage.getItem("safeMode") != 1) {
+        localStorage.setItem("BSODTitle", title);
+        localStorage.setItem("BSODMessage", message);
+        window.location.href = "bsod.html";
+    } else {
+        sendError(title, message);
+    }
 }
 
 window.onerror = function errorVisualizer(errorMsg, url, lineNumber) {
-    sendError("WebOS Exception", "WebOS has encountered an internal exception:<br><br>" + errorMsg + '<br><br>At Line: WebOS.System: ' + lineNumber);
+    notificationService("WebOS Exception", "WebOS has encountered an internal exception:<br><br>" + errorMsg, 3000);
 }
 
-function sendError(title, message) {
-    createNewError(title, message);
+function sendError(title, message, safemodeOverride = 0) {
+    createNewError(title, message, safemodeOverride);
 }
 
-function createNewError(title, message) {
-    document.getElementById("windowStore").innerHTML += document.getElementById("errorMessageTemplate").innerHTML;
-    var ErrID = Math.floor(Math.random() * 32767);
-    var windowId = "[" + ErrID + "] " + title;
-    var titleTextId = ErrID + "errorMessageBoxTitle " + title;
-    var titleBarId = ErrID + "errorMessageBoxWindowTitle " + title;
-    var messageId = ErrID + " " + title + " " + "errorMessageMsg"
-    document.getElementById("errorMessageBox").id = windowId;
-    document.getElementById("errorMessageBoxTitle").id = titleTextId
-    document.getElementById(titleTextId).innerHTML = title;
-    document.getElementById("errorMessageBoxWindowTitle").id = titleBarId;
-    document.getElementById("errorMessageMsg").id = messageId;
-    document.getElementById(messageId).innerHTML = message;
-    dragElement(document.getElementById(windowId), document.getElementById(titleBarId));
-    current = 0; target = document.getElementsByClassName("window").length;
-    while (current != target) {
-        dragElement(document.getElementsByClassName("window")[current], document.getElementsByClassName("windowTitle")[current]);
-        current++;
+function createNewError(title, message, safemodeOverride = 0) {
+    if (localStorage.getItem("safeMode") != 1 || safemodeOverride == 1) {
+        getElemId("windowStore").insertAdjacentHTML('beforeend', getElemId("errorMessageTemplate").innerHTML);
+        var ErrID = Math.floor(Math.random() * 3276700);
+        var windowId = title + " (" + ErrID + ")";
+        var titleTextId = ErrID + "errorMessageBoxTitle " + title;
+        var titleBarId = ErrID + "errorMessageBoxWindowTitle " + title;
+        var messageId = ErrID + " " + title + " " + "errorMessageMsg"
+        getElemId("errorMessageBox").id = windowId;
+        getElemId("errorMessageBoxTitle").id = titleTextId
+        getElemId(titleTextId).innerHTML = title;
+        getElemId("errorMessageBoxWindowTitle").id = titleBarId;
+        getElemId("errorMessageMsg").id = messageId;
+        getElemId(messageId).innerHTML = message;
+        dragElement(getElemId(windowId), getElemId(titleBarId));
+        openWindow(windowId);
+        playSystemSound("./system/sounds/error.mp3");
+        setTimeout(() => {
+            bringToFront(getElemId(windowId));
+        }, 50);
+    } else {
+        notificationService(title, message);
     }
-    openWindow(windowId);
+
 }

@@ -31,3 +31,8 @@ hr.context-menu {
 .notification {
     top: 55px;
 }
+
+div.startMenu>.leftPane {
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 0px;
+}

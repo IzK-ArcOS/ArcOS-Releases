@@ -1,4 +1,4 @@
-console.warn("STATUS: Initiated module: WebOS.System.dragLogic");
+startModule("WebOS.System.dragLogic");
 
 function dragElement(elmnt, titlebar) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;

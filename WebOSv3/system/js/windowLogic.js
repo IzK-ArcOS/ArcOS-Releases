@@ -1,126 +1,187 @@
-noResize = [
-    'Execute Command',
-    'Welcome!',
-    "Error Message"
-]
+startModule("WebOS.System.windowLogic");
 
-console.warn("STATUS: Initiated module: WebOS.System.windowLogic");
 function closewindow(window) {
-    console.log("STATUS: Started WebOS.System.windowLogic.closewindow: " + window);
+    notifyStartService("WebOS.System.windowLogic.closewindow: " + window.id);
     try {
-        window.style.opacity = '0';
-        setTimeout(() => {
-            window.style.visibility = "hidden";
-            window.style.left = "60px";
-            window.style.top = "60px";
-            if (!noResize.includes(window.id)) {
-                window.style.width = "fit-content";
-                window.style.height = "fit-content";
-            }
-            window.style.top = '50%';
-            window.style.left = '50%';
-        }, 300);
-    } catch { }
 
-    current = 0, target = activeapps.length;
-    while (current != target) {
-        if (window.id.includes(activeapps[current])) {
-            activeapps.splice(current, 1);
+        try {
+            window.style.opacity = '0';
+            setTimeout(() => {
+                window.style.visibility = "hidden";
+                window.style.display = "none";
+                window.style.left = "60px";
+                window.style.top = "60px";
+                if (!noResize.includes(window.id)) {
+                    window.style.width = "fit-content";
+                    window.style.height = "fit-content";
+                }
+                window.style.top = '50%';
+                window.style.left = '50%';
+            }, 300);
+        } catch (e) {}
+        for (var i = 0; i < activeapps.length; i++) { if (window.id == activeapps[i]) { activeapps.splice(i, 1); } }
+        updateTaskBar();
+    } catch {
+        try {
+            try {
+                window = document.getElementById(window)
+                notifyStartService("WebOS.System.windowLogic.closewindow: " + window.id + " * ALT *");
+
+                window.style.opacity = '0';
+                setTimeout(() => {
+                    window.style.visibility = "hidden";
+                    window.style.display = "none";
+                    window.style.left = "60px";
+                    window.style.top = "60px";
+                    if (!noResize.includes(window.id)) {
+                        window.style.width = "fit-content";
+                        window.style.height = "fit-content";
+                    }
+                    window.style.top = '50%';
+                    window.style.left = '50%';
+                }, 300);
+            } catch (e) {}
+            for (var i = 0; i < activeapps.length; i++) { if (window.id == activeapps[i]) { activeapps.splice(i, 1); } }
+            updateTaskBar();
+
+        } catch {
+            notificationService('Error closing window', "WebOS was unable to close the window.<br><Br>Please check the name and try again.");
         }
-        current++;
     }
-    updateTaskBar();
 }
 
+
 function openWindow(window) {
-    try {
-        if (window != "Welcome!") {
-
-            console.log("STATUS: Started WebOS.System.windowLogic.openWindow: " + window);
-            windowName = window;
-            window = document.getElementById(window);
-            bringToFront(window);
-            window.style.opacity = '0'
-            window.style.visibility = 'visible';
-            window.style.opacity = '1';
-            if (!activeapps.includes(windowName)) {
-                activeapps.push(windowName);
-                updateTaskBar();
-
-            }
-            document.getElementById('startMenu').style.opacity = '0';
+    notifyStartService("WebOS.System.windowLogic.openWindow: " + window);
+    var windowName = window;
+    window = document.getElementById(window);
+    if (!activeapps.includes(windowName)) {
+        activeapps.push(windowName);
+        window.style.opacity = "1";
+        setTimeout(() => {
+            window.style.visibility = "visible";
             setTimeout(() => {
-                document.getElementById('startMenu').style.visibility = 'hidden';
-            }, 200);
-        } else {
-            if (localStorage.getItem("dispWelcome") == 0) {
-                sendError("Welcome Wizard", "The welcome wizard is a one-time program, meaning that after you close it, it CANNOT be opened again.<br>To open the welcome window, reset your account.")
-            } else {
-
-                console.log("STATUS: Started WebOS.System.windowLogic.openWindow: " + window);
-                windowName = window;
-                window = document.getElementById("Welcome!");
-                bringToFront(window);
-                window.style.opacity = '0'
-                window.style.visibility = 'visible';
-                window.style.opacity = '1';
-                if (!activeapps.includes(windowName)) {
-                    activeapps.push(windowName);
-                    updateTaskBar();
-
-                }
-                document.getElementById('startMenu').style.opacity = '0';
+                window.style.display = "unset";
                 setTimeout(() => {
-                    document.getElementById('startMenu').style.visibility = 'hidden';
-                }, 200);
-            }
-
+                    updateTaskBar();
+                    updateTitlebar();
+                    focusedWindow = windowName;
+                    bringToFront(window);
+                }, 50);
+            }, 50);
+        }, 50);
+    } else {
+        if (window.style.opacity == '0' && activeapps.includes(windowName)) {
+            window.style.display = "unset";
+            window.style.opacity = "1";
+            setTimeout(() => {
+                window.style.visibility = "visible";
+            }, 50);
+        } else {
+            minimizeWindow(windowName);
         }
-    } catch { }
+    }
+    try {
+        getElemId('startMenu').style.opacity = '0';
+        setTimeout(() => {
+            getElemId('startMenu').style.visibility = 'hidden';
+        }, 200);
+    } catch {}
 }
 
 function minimizeWindow(window) {
-    console.log("STATUS: Started WebOS.System.windowLogic.minimizeWindow: " + window);
-    window = document.getElementById(window);
+    notifyStartService("WebOS.System.windowLogic.minimizeWindow: " + window);
+    window = getElemId(window);
     window.style.opacity = '0';
-
     setTimeout(() => {
         window.style.visibility = "hidden";
+        window.style.display = "none";
     }, 300);
 }
 
 function updateTaskBar() {
-    console.log("STATUS: Started WebOS.System.windowLogic.updateTaskbar");
-    var str = "";
-    activeapps.forEach(element => {
-        str += "<button class=\"taskbarButton\" onclick='openWindow(\"" + element + "\")'><p>" + element + "</p></button> ";
-    });
-    document.getElementById("taskbarButtons").innerHTML = str;
+    try {
+        notifyStartService("WebOS.System.windowLogic.updateTaskbar");
+        var str = "";
+        activeapps.forEach(element => { str += "<button class=\"taskbarButton\" onclick='openWindow(\"" + element + "\")'><p>" + element + "</p></button> "; });
+        getElemId("taskbarButtons").innerHTML = str;
+    } catch { notificationService("Error", "Unable to update taskbar, is <code>userInterface</code> loaded?") }
+
 }
 
 function bringToFront(window) {
     try {
-        console.log("STATUS: Started WebOS.System.windowLogic.bringToFront: " + window.id);
         maxamount += 10
         window.style.zIndex = maxamount;
-    } catch { }
-
+        focusedWindow = window.id;
+    } catch (e) {}
 }
 
-function loadWindow(appFile) {
-    console.log("STATUS: Started WebOS.System.windowLogic.loadWindow: loading .app file " + appFile);
-    var x = fetch(appFile)
-        .then(response => response.text())
-        .then(text => {
-            document.getElementById("windowStore").innerHTML += text;
-            current = 0; target = document.getElementsByClassName("window").length;
-            while (current != target) {
-                dragElement(document.getElementsByClassName("window")[current], document.getElementsByClassName("windowTitle")[current]);
-                current++;
-            }
-        })
-        .catch(function () {
-            sendError("System Error", "The system cannot find the application specified.<br>Please check the name and try again<br><br>File: " + appFile);
-        });
+function loadWindow(appFile, fromKernel = 0, fromAddApp = 0) {
+    notifyLoadApp(appFile);
+    var x = fetch(appFile).then(response => response.text()).then(text => {
+        getElemId("windowStore").insertAdjacentHTML("afterbegin", text);
+        for (var i = 0; i < document.getElementsByClassName("window").length; i++) {
+            dragElement(document.getElementsByClassName("window")[i], document.getElementsByClassName("windowTitle")[i]);
+        }
+        if (fromKernel == 0) { openWindow(getElemId("windowStore").childNodes[0].id); }
+        if (fromAddApp == 1) {
+            notificationService(
+                "Add application",
+                "The app has been loaded, but needs to be started from " +
+                "<B>Execute Command</B> with the following command:" +
+                "<br><code>openWindow(\"" + getElemId("windowStore").childNodes[0].id + "\");</code><br><Br>" +
+                "<button onclick=\"openWindow('" + getElemId("windowStore").childNodes[0].id + "');\">Open loaded app</button>");
+        }
+    }).catch(function() { sendError("System Error", "The system cannot find the application specified.<br>Please check the name and try again<br><br>File: " + appFile); });
+}
 
+function updateTitlebar() {
+    var x = activeapps;
+    for (var i = 0; i < x.length; i++) {
+        getElemId(x[i]).children[0].style.backgroundColor = "#DFDFDF62";
+    }
+    if (localStorage.getItem(args.get("username") + "_theme") == null) localStorage.setItem(args.get("username") + "_theme", "darkrounded");
+    if (localStorage.getItem("safeMode") != 1) {
+        var w = localStorage.getItem(args.get("username") + "_theme");
+        if (w.includes("light")) {
+            var x = activeapps;
+            for (var i = 0; i < x.length; i++) {
+                if (focusedWindow == x[i] && !excludeTitlebarChange.includes(x[i])) {
+                    getElemId(x[i]).children[0].style.backgroundColor = "#DFDFDF62";
+                } else {
+                    getElemId(x[i]).children[0].style.backgroundColor = "#ffffff00";
+                }
+            }
+        } else {
+            var x = activeapps;
+            for (var i = 0; i < x.length; i++) {
+                if (focusedWindow == x[i] && !excludeTitlebarChange.includes(x[i])) {
+                    getElemId(x[i]).children[0].style.backgroundColor = "#1e1e1e62";
+                } else {
+                    getElemId(x[i]).children[0].style.backgroundColor = "#ffffff00";
+                }
+            }
+        }
+    } else {
+        var x = activeapps;
+        for (var i = 0; i < x.length; i++) {
+            if (focusedWindow == x[i] && !excludeTitlebarChange.includes(x[i])) {
+                getElemId(x[i]).children[0].style.backgroundColor = "#1e1e1e62";
+            } else {
+                getElemId(x[i]).children[0].style.backgroundColor = "#ffffff00";
+            }
+        }
+    }
+}
+
+/*setInterval(() => {
+    updateTitlebar();
+}, 10);*/
+
+function closeAllWindows() {
+    for (var i = 0; i < document.getElementById("windowStore").childNodes.length; i++) {
+        closewindow(document.getElementById("windowStore").childNodes[i]);
+        activeapps = [];
+    }
 }
