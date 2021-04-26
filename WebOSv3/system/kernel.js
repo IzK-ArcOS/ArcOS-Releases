@@ -25,13 +25,6 @@ app.on("ready", () => {
         }
     })
 
-    globalShortcut.register('Control+Shift+I', () => {
-        BrowserWindow.getFocusedWindow().toggleDevTools();
-    })
-    globalShortcut.register("F4", () => {
-        return false;
-    })
-
     globalShortcut.register("Control+Alt+Shift+R", () => {
         win.loadFile("main.html")
     })
@@ -46,7 +39,7 @@ app.on("ready", () => {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
-            devTools: true
+            devTools: false,
         },
         backgroundColor: "#111",
     })
