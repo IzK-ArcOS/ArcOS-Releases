@@ -1,4 +1,4 @@
-# WebOSv3
+# WebOSv3 r8
 The dummy operating system built in HTML, javascript, and Electron.
 
 Yes, I know that it isn't a real operating system, but it isn't ment to be that anyway.
@@ -33,15 +33,17 @@ app.on('exit', () => { //// 'window-all-closed' is now 'exit' ////
 Thanks to github user @[johannesjo](https://github.com/johannesjo) at [this](https://github.com/electron/electron/issues/5708#issuecomment-531492039) electron github issue for supplying the information I was looking for. The last comment of an otherwise hopeless issue saved my day.
 
 ------
-Upon first boot, you will see the login screen, asking for your name. The screen you're seeing is the `login.html` file in the root of WebOS. If no name is entered, it will default to Administrator. Many parts of the OS have this failsafe in place in order to make sure that it (generally) doesn't break.
+Upon first boot, you will see the login screen, asking for your name. The screen you're seeing is the `login.html` file in the root of WebOS.
+
+If there are one or more users created, you will see a user selector.
 
 The length of all username fields are 13 characters, exactly enough for Administrator.
 
-Note: if you enter `COB=1` into the username field, and shut down using the shutdown button in the bottom right corner of the screen, the OS will have the `crashOnBoot` flag set to `1` in the `localStorage`. This means that the application will close like normal, but will boot up to a bluescreen. Not sure if I'll leave this easter egg in forever though.
 
 About the blue screen: after the page has rendered (`bsod.html`), WebOS will be locked up and you cannot interact with it anymore, not even with the developer tools. That's because of this script:
 
 ```javascript
+//NOTE: This code is temporarily commented in the actual bsod.html file for development//
 onload = function () {
     document.getElementById("title").innerHTML = localStorage.getItem("BSODTitle");
     document.getElementById("message").innerHTML = localStorage.getItem("BSODMessage");
@@ -56,28 +58,37 @@ onload = function () {
         }
     }, 1000);
 }
-````
+```
 
-in the `bsod.html` file. The bottom part after the localStorage is the most important part, because that part keeps chromium busy setting items in a list, so busy even that Developer Tools won't load any site elements, or process any code, and, you also can't hit `ALT`+`F4` to shut WebOS down, like (most) other Windows in, well, Windows.
+in the `bsod.html` file. The bottom part after the localStorage is the most important part, because that part keeps chromium busy setting items in a list, so busy even that Developer Tools won't load any site elements, or process any code, and, you also can't hit `ALT`+`F4` to shut WebOS down, like (most) other windows in, well, Windows.
 
-There is another easter egg, but I'll give you the task of figuring that out.
+Once you have entered your name, you will land on the desktop with a welcome window. Once the `Close` button is clicked the `dispWelcome` flag will be set to `0`, which means that it cannot be opened again (at least not with the `openWindow("Welcome!");` command).
 
-````
-Hint: AARD => WOSASD
-````
-
-Once you have entered your name, you will land on the desktop with a welcome window. Once the `Close` button is clicked the `dispWelcome` flag will be set to `0`, which means that it cannot be opened again (at least with the `openWindow("Welcome!");` command).
-
-Once that is closed you can click on the start button to open programs, or change settings by going into the Control Panel. I've also included a very powerful application: `Execute Command`. This gives you direct access to javascript, using the `eval(string)` command in javascript. With this you can cause a BSOD, send an error message, display a notification, and much, much more. You can delete user-data from this prompt.
+Once that is closed you can click on the start button to open programs, or change settings by going into the Control Panel. I've also included a very powerful application: `Execute Command`. This gives you direct access to javascript, using the `eval(String)` command in javascript. With this you can cause a BSOD, send an error message, display a notification, and much, much more. You can delete user-data from this prompt.
 
 These are the settings that you can modify at the time of writing:
 
   * Taskbar position (top or bottom)
   * Theme (dark rounded, dark sharp, light rounded, light sharp)
   * Applications (load `.app` files with a relative or absolute path to the file)
-  * Username (change it)
-  * and the ability to reset WebOS (will just execute the `localStorage.Clear();` command and trigger a restart).
+  * Username
+  * Profile Picture
+  * Password
+  * and the ability to reset the currently logged in user.
 
 I also want to make a system that allows the user to configure WebOS to automatically import applications specified upon login, but that still needs to be implemented (at least on February 23rd, 2020).
 
 If you want to contribute, go ahead, send me a message.
+
+
+## NOTE AS OF APRIL 26TH, 2021
+
+Some of the things mentioned above are no longer up to date. After a quick reading I modified some of it but some changes have escaped me. It has been 2 months since the last update, after all.
+
+Also a little something about the passwords for user accounts: Please don't take security seriously, as it isn't the safest thing in the world.
+
+Thanks to @[virivongithub](https://github.com/virivongithub) for helping me with the new login screen design. It has come a far way since the initial release of WebOSv3 (3.0.1, not even a revision like the current one from april 26th 2021: r8).
+
+Have fun with WebOSv3,
+
+TechWorldInc.
