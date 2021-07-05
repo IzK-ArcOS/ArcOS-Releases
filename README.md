@@ -1,4 +1,4 @@
-# WebOSv3
+# ArcOSv3 (was WebOSv3)
 
 The Operating System Environment, or OSE, build in Electron, running under Windows.
 
