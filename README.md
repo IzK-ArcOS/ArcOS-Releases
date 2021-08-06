@@ -1,6 +1,6 @@
 # ArcOSv3 (was WebOSv3)
 
-The Operating System Environment, or OSE, build in Electron, running under Windows.
+The Operating System Environment, or OSE, build in Electron, running under Windows or Linux.
 
 Think of it as the olden days when Windows ran on top of MS-DOS. ArcOS runs on top of Windows or linux in the same way. You start ArcOS from the start menu, and you are off.
 
