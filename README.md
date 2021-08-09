@@ -4,7 +4,7 @@ The Operating System Environment, or OSE, build in Electron, running under Windo
 
 Think of it as the olden days when Windows ran on top of MS-DOS. ArcOS runs on top of Windows or linux in the same way. You start ArcOS from the start menu, and you are off.
 
-ArcOS sports a modern friendly UI. It also uses a universal app system allowing you to easily load your own applications. It has these applications (at the time of releasing WebOSv3 release 12 (`v3r15`):
+ArcOS sports a modern friendly UI. It also uses a universal app system allowing you to easily load your own applications. It has these applications (at the time of releasing WebOSv3 release 15 (`v3r15`):
 
 - Application Manager
   - Allows you to forcefully close applications and view which ones are opened
